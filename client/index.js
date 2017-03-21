@@ -1,6 +1,11 @@
+import $ from 'jquery';
+
 function gotStream(stream) {
-  console.warn(stream);
-  document.getElementById('localVideo').srcObject = stream;
+  const $video = $('video');
+
+  if ($video.length) {
+    $video[0].srcObject = stream;
+  }
 }
 
 navigator

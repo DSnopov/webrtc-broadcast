@@ -1,6 +1,15 @@
 {% extends 'layout.nunj' %}
 
 {% block body %}
-  <h1>{{ name }}!</h1>
-  <video id="localVideo" autoplay></video>
+
+  <form action="/room" method="post">
+    <button>Create your room</button>
+  </form>
+  <p>or join an existing one:</p>
+  {% for roomId in roomIds %}
+    <li><a href="room/{{ roomId }}">{{ roomId }}</a></li>
+  {% else %}
+    <li>There are no rooms yet.</li>
+  {% endfor %}
+
 {% endblock %}
