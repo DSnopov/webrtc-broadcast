@@ -1,0 +1,26 @@
+{
+  "name": "webrtc-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack --config webpack.config.js",
+    "start-dev": "./node_modules/.bin/nodemon --ignore client/ --ignore public/ --ignore webpack.config.js server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-session": "^2.0.0-beta.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "nunjucks": "^3.0.0",
+    "socket.io": "^1.7.3",
+    "webrtc-adapter": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "webpack": "^2.2.1"
+  }
+}

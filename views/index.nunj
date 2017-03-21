@@ -1,0 +1,6 @@
+{% extends 'layout.nunj' %}
+
+{% block body %}
+  <h1>{{ name }}!</h1>
+  <video id="localVideo" autoplay></video>
+{% endblock %}

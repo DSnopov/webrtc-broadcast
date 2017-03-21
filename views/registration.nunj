@@ -1,0 +1,9 @@
+{% extends 'layout.nunj' %}
+
+{% block body %}
+  <h1>Enter your name:</h1>
+  <form action="/registration" method="post">
+    <input type="text" name="name" placeholder="name">
+    <button>Submit</button>
+  </form>
+{% endblock %}

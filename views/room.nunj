@@ -1,0 +1,5 @@
+{% extends 'layout.nunj' %}
+
+{% block body %}
+  <h1>This is room with id {{ roomId }}</h1>
+{% endblock %}
