@@ -4,15 +4,15 @@ const express = require('express');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const http = require('http');
-const socketIO = require('socket.io');
+const SocketServer = require('socket.io');
 const nunjucks = require('nunjucks');
 const url = require('url');
 const crypto = require('crypto');
 
 const app = express();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
-const server = http.createServer(app);
-const io = socketIO(server);
+const httpServer = http.createServer(app);
+const io = new SocketServer(httpServer);
 
 const db = {
   roomIds: []
@@ -94,6 +94,6 @@ app.post('/registration', urlencodedParser, (req, res) => {
 //   socket.on('disconnect', () => console.log('user disconnected'));
 // });
 
-server.listen(3000, () => {
+httpServer.listen(3000, () => {
   console.log('Server is running...');
 });
