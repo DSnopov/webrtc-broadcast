@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/webpack --config webpack.config.js",
-    "start-dev": "./node_modules/.bin/nodemon --ignore client/ --ignore public/ --ignore webpack.config.js server.js"
+    "webpack-build": "./node_modules/.bin/webpack --config webpack.config.js",
+    "webpack-watch": "./node_modules/.bin/webpack --config webpack.config.js --watch",
+    "launch-server": "./node_modules/.bin/nodemon --ignore client/ --ignore public/ server.js",
+    "start-dev": "npm run webpack-watch & npm run launch-server"
   },
   "author": "",
   "license": "ISC",
