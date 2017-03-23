@@ -4,9 +4,7 @@ function gotStream(stream) {
   $video[0].srcObject = stream;
 }
 
-const $video = $('video');
-
-if ($video.length) {
+function getLocalStream() {
   navigator
     .mediaDevices
     .getUserMedia({
@@ -18,3 +16,15 @@ if ($video.length) {
       alert('getUserMedia() error: ' + e.name);
     });
 }
+
+const $video = $('video');
+
+const socket = io();
+
+socket.emit('join room', roomId);
+
+socket.on('joined room', isOwner => {
+  if (isOwner) {
+    getLocalStream();
+  }
+});

@@ -10,12 +10,17 @@ const url = require('url');
 const crypto = require('crypto');
 
 const app = express();
+const cookieSessionMiddleware = cookieSession({
+  secret: process.env.SECRET,
+  maxAge: 3 * 365 * 24 * 60 * 60 * 1000 // 3 years
+});
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const httpServer = http.createServer(app);
 const io = new SocketServer(httpServer);
 
 const db = {
-  roomIds: []
+  roomIds: [],
+  roomOwners: {}
 };
 
 app.set('view engine', 'nunj');
@@ -26,10 +31,7 @@ nunjucks.configure('views', {
 });
 
 app.use(express.static('public'));
-app.use(cookieSession({
-  secret: process.env.SECRET,
-  maxAge: 3 * 365 * 24 * 60 * 60 * 1000 // 3 years
-}));
+app.use(cookieSessionMiddleware);
 
 function restrict(req, res, next) {
   if (req.session.name) {
@@ -88,11 +90,26 @@ app.post('/registration', urlencodedParser, (req, res) => {
   res.redirect(redirectURL);
 });
 
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-//
-//   socket.on('disconnect', () => console.log('user disconnected'));
-// });
+
+io.use((socket, next) => {
+  cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
+io.on('connection', (socket) => {
+
+  socket.on('join room', (roomId) => {
+    socket.join(roomId, () => {
+      const isOwner = socket.request.session.ownedRoomId === roomId;
+
+      if (isOwner) {
+        db.roomOwners[roomId] = socket.id;
+      }
+      io.to(roomId).emit('joined room', isOwner, socket.id);
+    });
+  });
+
+  socket.on('disconnect', () => console.log('user disconnected'));
+});
 
 httpServer.listen(3000, () => {
   console.log('Server is running...');

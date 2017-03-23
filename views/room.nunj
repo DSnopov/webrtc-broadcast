@@ -1,5 +1,16 @@
 {% extends 'layout.nunj' %}
 
 {% block body %}
+
   <video autoplay></video>
+
+  <script>
+    var roomId = {{ roomId | dump | safe }};
+  </script>
+  <!-- todo: move socket library to webpack -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- todo: don't hardcode bundle paths -->
+  <script src="/dist/vendor.js"></script>
+  <script src="/dist/index.js"></script>
+
 {% endblock %}

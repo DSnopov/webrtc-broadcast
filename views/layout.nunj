@@ -7,10 +7,5 @@
 <body>
   {% block body %}
   {% endblock %}
-
-  <script src="/socket.io/socket.io.js"></script>
-  <!-- todo: don't hardcode bundle paths -->
-  <script src="/dist/vendor.js"></script>
-  <script src="/dist/index.js"></script>
 </body>
 </html>
