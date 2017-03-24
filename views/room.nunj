@@ -2,10 +2,13 @@
 
 {% block body %}
 
-  <video autoplay></video>
+  <video autoplay muted></video>
 
   <script>
-    var roomId = {{ roomId | dump | safe }};
+    var config = {
+      roomId: {{ roomId | dump | safe }},
+      isOwner: {{ isOwner | dump | safe }}
+    };
   </script>
   <!-- todo: move socket library to webpack -->
   <script src="/socket.io/socket.io.js"></script>

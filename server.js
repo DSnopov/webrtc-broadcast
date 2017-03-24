@@ -19,8 +19,7 @@ const httpServer = http.createServer(app);
 const io = new SocketServer(httpServer);
 
 const db = {
-  roomIds: [],
-  roomOwners: {}
+  roomIds: []
 };
 
 app.set('view engine', 'nunj');
@@ -61,8 +60,12 @@ app.get('/', restrict, (req, res) => {
 
 app.get('/room/:roomId', restrict, (req, res) => {
   const roomId = req.params.roomId;
+  const isOwner = req.session.ownedRoomId === roomId;
   if (db.roomIds.indexOf(roomId) > -1) {
-    res.render('room', {roomId});
+    res.render('room', {
+      roomId,
+      isOwner
+    });
   } else {
     res.redirect('/');
   }
@@ -99,13 +102,13 @@ io.on('connection', (socket) => {
 
   socket.on('join room', (roomId) => {
     socket.join(roomId, () => {
-      const isOwner = socket.request.session.ownedRoomId === roomId;
-
-      if (isOwner) {
-        db.roomOwners[roomId] = socket.id;
-      }
-      io.to(roomId).emit('joined room', isOwner, socket.id);
+      socket.broadcast.to(roomId).emit('joined room', socket.id);
     });
+  });
+
+  socket.on('signal', (data) => {
+    data.from = socket.id;
+    socket.broadcast.to(data.to).emit('signal', data);
   });
 
   socket.on('disconnect', () => console.log('user disconnected'));
