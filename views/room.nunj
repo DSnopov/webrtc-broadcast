@@ -2,7 +2,7 @@
 
 {% block body %}
 
-  <video autoplay muted></video>
+  <video autoplay {{ 'muted' if isOwner }}></video>
 
   <script>
     var config = {
